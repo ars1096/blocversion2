@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notas</title>
+    <link rel="stylesheet" href="notas.css">
+    <script>
+
+        function clickCounter() {
+
+            var palabra = document.getElementById("nota").value;
+
+            if(typeof (Storage)!= "undefined"){
+
+                if(localStorage.clickcount > 0){
+                    localStorage.clickcount= Number(localStorage.clickcount)+1;
+                }else{
+
+                    localStorage.clickcount=1;
+
+                }
+
+                localStorage.setItem(localStorage.clickcount,palabra);
+                //alert(localStorage.getItem(localStorage.clickcount));
+                show(localStorage.clickcount);
+
+
+            }else{
+                document.getElementById("result").innerHTML= "El buscador no soporta este programa"
+
+            }
+        }
+
+        function show (nclick) {
+            li = document.createElement("li");
+            li.innerHTML=localStorage.getItem(nclick);
+            li.setAttribute("id",nclick);
+            li.setAttribute("onclick","bye("+nclick+");");
+            document.getElementById("notas").appendChild(li);
+
+        }
+
+
+        function refresco() {
+            //localStorage.clear();
+            for(var i=0, long = localStorage.length; i < long-1 ; ++i) {
+                show(localStorage.key(i));
+            }
+
+        }
+
+
+
+        function bye(nclick) {
+            localStorage.removeItem(nclick);
+            li = document.getElementById(nclick);
+            li.parentNode.removeChild(li);
+
+
+        }
+
+
+
+
+    </script>
+</head>
+
+<body onload="refresco(this)">
+
+
+<form >
+    <input type="text" id="nota" >
+    <input type="button" id="button" value="añade nota" onclick="clickCounter(this)">
+
+    </form>
+<ul id = "notas"></ul>
+<div id="result"></div>
+
+</body>
+</html>
